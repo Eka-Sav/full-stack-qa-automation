@@ -1,0 +1,79 @@
+[
+  {
+    "id": "name_long",
+    "name": "ProductWithAVeryLongNameDesignedToTestBoundaryValuesOfTheProductNameFieldInAnOnlineShopToCheckHowTheSystemHandlesStringsThatExceedTheStandardInputFieldLengthForAProductNameExtraExtraExtraExtraExtraExtraExtraExtra",
+    "category": "goods",
+    "price": 199.99,
+    "description": "Regular product description."
+  },
+  {
+    "id": "name_emoji",
+    "name": "🛒🎉🔥💎🚀🎁🌟💡🎯🛍️🏆",
+    "category": "goods",
+    "price": 49.99,
+    "description": "Regular product description."
+  },
+  {
+    "id": "name_injection",
+    "name": "<script>alert('XSS')</script> OR '1'='1'; DROP TABLE products;--",
+    "category": "service",
+    "price": 99.99,
+    "description": "Regular product description."
+  },
+  {
+    "id": "name_digits_only",
+    "name": "12345",
+    "category": "travel",
+    "price": 29.99,
+    "description": "Regular product description."
+  },
+  {
+    "id": "name_whitespace_only",
+    "name": "   ",
+    "category": "goods",
+    "price": 59.99,
+    "description": "Regular product description."
+  },
+  {
+    "id": "description_empty",
+    "name": "Regular Product",
+    "category": "service",
+    "price": 79.99,
+    "description": ""
+  },
+  {
+    "id": "description_null",
+    "name": "Regular Product",
+    "category": "travel",
+    "price": 149.99,
+    "description": null
+  },
+  {
+    "id": "description_long",
+    "name": "Regular Product",
+    "category": "goods",
+    "price": 89.99,
+    "description": "This is a very long product description designed to test boundary values of the description field in an online shop. It contains a large number of characters to check how the system handles strings that exceed the standard input field length. We keep adding text to make sure the description is really extra long and covers different test scenarios, including display, storage and processing of the data on both the server and the client side. Additional text to increase the length of the product description for testing the online shop system."
+  },
+  {
+    "id": "description_injection",
+    "name": "Regular Product",
+    "category": "service",
+    "price": 119.99,
+    "description": "<script>alert('XSS')</script> OR '1'='1'; DROP TABLE products;--"
+  },
+  {
+    "id": "category_invalid",
+    "name": "Regular Product",
+    "category": "electronics",
+    "price": 249.99,
+    "description": "Regular product description."
+  },
+  {
+    "id": "category_wrong_case",
+    "name": "Regular Product",
+    "category": "SERVICE",
+    "price": 39.99,
+    "description": "Regular product description."
+  }
+]
