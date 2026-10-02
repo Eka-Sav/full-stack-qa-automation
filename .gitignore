@@ -1,0 +1,30 @@
+.env
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# local database files (SQLite leftovers, project uses PostgreSQL in Docker)
+*.db
+
+# IDE
+.idea/
+.vscode/
+
+# pytest / tools
+.pytest_cache/
+.ruff_cache/
+test-results/
+
+# allure
+allure-results/
+allure-report/
+allure-history/
+
+logs/
+
+# AI pipeline drafts
+tests/generated_ai/
+

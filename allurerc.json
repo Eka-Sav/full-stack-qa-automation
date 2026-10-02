@@ -1,0 +1,14 @@
+{
+  "historyPath": "./allure-history/history.jsonl",
+  "categories": {
+    "rules": [
+      {
+        "name": "Known bugs (xfail)",
+        "matchers": {
+          "statuses": ["skipped"],
+          "message": "XFAIL"
+        }
+      }
+    ]
+  }
+}

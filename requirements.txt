@@ -1,0 +1,28 @@
+# Backend
+fastapi==0.115.0            # API framework
+uvicorn==0.32.0             # ASGI server that runs FastAPI
+pydantic==2.9.2             # request and response validation
+
+# Database
+sqlalchemy==2.0.43          # ORM: database access through Python classes
+psycopg2-binary==2.9.13     # PostgreSQL driver
+
+# Testing
+pytest==8.3.5               # test runner
+pytest-playwright==0.5.0    # Playwright integration for pytest, provides the page fixture
+playwright==1.44.0          # browser automation for UI tests
+
+# Reporting
+allure-pytest==2.13.5       # Allure reports with steps, screenshots and run history
+
+# HTTP
+requests==2.32.4            # HTTP client used by the API test client
+
+# AI
+anthropic==1.4.0            # Claude API client for the AI test generation pipeline
+
+# Utils
+python-dotenv==1.0.1        # loads environment variables from .env
+faker==25.2.0               # generates fake test data
+
+ruff==0.16.8
