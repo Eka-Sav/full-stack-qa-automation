@@ -20,7 +20,7 @@ jobs:
       - run: pip install ruff==0.16.8
       - run: ruff check .
 
-  api-tests:
+  backend-tests:
     runs-on: ubuntu-latest
     needs: lint
     services:
@@ -67,11 +67,11 @@ jobs:
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v7
         with:
-          name: allure-results-api
+          name: allure-results-backend
           path: allure-results
       - name: Upload debug logs
         if: failure()
         uses: actions/upload-artifact@v7
         with:
-          name: debug-api
+          name: debug-backend
           path: backend.log
