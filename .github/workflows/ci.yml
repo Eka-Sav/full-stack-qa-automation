@@ -12,7 +12,7 @@ permissions:
 jobs:
   # Job 1: static code check (no app, no database needed)
   lint:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-python@v6
@@ -23,7 +23,7 @@ jobs:
 
   # Job 2: tests, runs twice in parallel (see matrix below)
   tests:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     needs: lint
     strategy:
       fail-fast: false
