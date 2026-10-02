@@ -10,6 +10,7 @@ permissions:
   contents: read
 
 jobs:
+  # Job 1: static code check (no app, no database needed)
   lint:
     runs-on: ubuntu-latest
     steps:
@@ -20,9 +21,19 @@ jobs:
       - run: pip install ruff==0.16.8
       - run: ruff check .
 
-  backend-tests:
+  # Job 2: tests, runs twice in parallel (see matrix below)
+  tests:
     runs-on: ubuntu-latest
     needs: lint
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - suite: backend
+            markers: "api or db or integration"
+          - suite: ui
+            markers: "ui or e2e"
+
     services:
       postgres:
         image: postgres:16
@@ -37,17 +48,22 @@ jobs:
           --health-interval 5s
           --health-timeout 5s
           --health-retries 10
+
     env:
       DATABASE_URL: postgresql://postgres:${{ secrets.POSTGRES_PASSWORD }}@localhost:5432/finance
       BASE_URL: http://localhost:8005
       FRONTEND_URL: http://localhost:3000
+
     steps:
+      # 1. Get the code
       - uses: actions/checkout@v6
       - uses: actions/checkout@v6
         with:
           repository: Eka-Sav/full-stack-qa-app
           token: ${{ secrets.APP_REPO_TOKEN }}
           path: app
+
+      # 2. Python and dependencies
       - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
@@ -55,23 +71,66 @@ jobs:
           cache-dependency-path: |
             requirements.txt
             app/requirements.txt
+
       - run: pip install -r requirements.txt -r app/requirements.txt
+
+      # 3. Backend
       - name: Start backend
         working-directory: app
         run: nohup python -m uvicorn backend.main:app --host 0.0.0.0 --port 8005 > "$GITHUB_WORKSPACE/backend.log" 2>&1 &
+
       - name: Wait for backend
         run: curl -sf --retry 30 --retry-delay 2 --retry-connrefused http://localhost:8005/docs || (cat backend.log && exit 1)
+
+      # 4. Browser and frontend (only for the ui suite)
+      - name: Install Playwright browser
+        if: matrix.suite == 'ui'
+        run: playwright install --with-deps chromium
+
+      - uses: actions/setup-node@v6
+        if: matrix.suite == 'ui'
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: app/frontend/package-lock.json
+
+      - name: Build frontend
+        if: matrix.suite == 'ui'
+        working-directory: app/frontend
+        env:
+          CI: "false"
+          REACT_APP_BASE_URL: http://localhost:8005
+        run: |
+          npm ci
+          npm run build
+
+      - name: Start frontend
+        if: matrix.suite == 'ui'
+        working-directory: app/frontend
+        run: nohup npx --yes serve -s build -l 3000 > "$GITHUB_WORKSPACE/frontend.log" 2>&1 &
+
+      - name: Wait for frontend
+        if: matrix.suite == 'ui'
+        run: curl -sf --retry 30 --retry-delay 2 --retry-connrefused http://localhost:3000 || (cat frontend.log && exit 1)
+
+      # 5. Tests
       - name: Run tests
-        run: pytest -m "api or db or integration" --alluredir=allure-results
+        run: pytest -m "${{ matrix.markers }}" --alluredir=allure-results
+
+      # 6. Save results
       - name: Upload Allure results
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v7
         with:
-          name: allure-results-backend
+          name: allure-results-${{ matrix.suite }}
           path: allure-results
+
       - name: Upload debug logs
         if: failure()
         uses: actions/upload-artifact@v7
         with:
-          name: debug-backend
-          path: backend.log
+          name: debug-${{ matrix.suite }}
+          path: |
+            backend.log
+            frontend.log
+            test-results/
