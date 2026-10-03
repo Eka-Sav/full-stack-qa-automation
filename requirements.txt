@@ -9,9 +9,8 @@ psycopg2-binary==2.9.13     # PostgreSQL driver
 
 # Testing
 pytest==8.3.5               # test runner
-pytest-playwright==0.5.0    # Playwright integration for pytest, provides the page fixture
-playwright==1.44.0          # browser automation for UI tests
-
+pytest-playwright==0.9.0    # Playwright integration for pytest, provides the page fixture
+playwright==1.63.0          # browser automation for UI tests
 # Reporting
 allure-pytest==2.13.5       # Allure reports with steps, screenshots and run history
 
