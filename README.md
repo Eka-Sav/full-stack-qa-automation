@@ -1,4 +1,5 @@
 # Full-Stack Test Automation Framework
+[![CI](https://github.com/Eka-Sav/full-stack-qa-automation/actions/workflows/ci.yml/badge.svg)](https://github.com/Eka-Sav/full-stack-qa-automation/actions/workflows/ci.yml)
 
 This is a test automation framework that covers every layer of the application: API, database, 
 UI, integration and end-to-end tests. It also includes an LLM-based pipeline that generates 
