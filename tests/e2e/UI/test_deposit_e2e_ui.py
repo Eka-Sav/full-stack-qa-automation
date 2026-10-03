@@ -84,6 +84,8 @@ class TestE2EDepositUI:
             # open the dashboard again, otherwise it may still show stats from before the deposit
             dashboard_page_sender.page.goto(f"{config.FRONTEND_URL}/dashboard")
             expect(dashboard_page_sender.balance_amount).to_have_text(f"${expected_balance:.2f}")
+            expect(dashboard_page_sender.stat_total_received_value).to_have_text(f"+${expected_balance:.2f}")
+            expect(dashboard_page_sender.stat_transactions_value).to_have_text(str(dash_count_before + 1))
             dash_balance_after = dashboard_page_sender.get_balance()
             dash_received_after = dashboard_page_sender.get_total_received()
             dash_spent_after = dashboard_page_sender.get_total_spent()
