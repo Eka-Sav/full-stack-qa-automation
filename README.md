@@ -11,11 +11,11 @@ The application supports user registration, product purchase, deposits, and tran
 The project is split into two GitHub repositories: a public one with the test framework, 
 and a private one with the application code. The application code is private, as it would be in a real company, and is available on request.
 
-> **Latest results:** 260 tests: 254 passed, 6 xfailed (known bugs, see below).
+> **Latest results:** 260 tests: 254 passed, 6 xfailed (known bugs, see below). Allure shows the xfailed tests as "Skipped".
 >
 > **Allure report:** [view on GitHub Pages](https://eka-sav.github.io/full-stack-qa-automation/)
 
-
+![Allure report overview](docs/images/allure-overview.png)
 
 ## Repository layout
 
