@@ -134,3 +134,35 @@ jobs:
             backend.log
             frontend.log
             test-results/
+  # Job 3: one Allure report from both suites, published to GitHub Pages
+  allure-report:
+    needs: tests
+    if: ${{ !cancelled() && github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          pattern: allure-results-*
+          path: allure-results
+          merge-multiple: true
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+
+      - name: Build Allure report
+        run: npx --yes allure@3.18.0 awesome ./allure-results --group-by "epic,feature,story" --output allure-report
+
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: allure-report
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5
